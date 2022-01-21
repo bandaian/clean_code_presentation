@@ -1,0 +1,683 @@
+---
+title: "Writing Clean Code "
+output:
+  html_document:
+    theme: cosmo
+    highlight: tango
+    toc: yes
+    toc_float:
+      collapsed: false
+    number_sections: yes 
+---
+
+<hr style="width:100%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:1"> 
+
+<!--- Date course last updated and a contact for any help needed. --->
+<center> Presentation Date : January 2022 | <a href="mailto:ian.banda@ons.gov.uk=Help with course">Need help? Contact the team.</a></center>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(reticulate)
+```
+
+
+
+<style>
+p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0px 0px 12px 0px;
+}
+
+h1, h2, h3, h4, h5, h6, legend {
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+}
+
+
+</style>
+
+# What is Clean Code?
+
+Clean code is code that is easy to understand and easy to change.
+
+It's writing code that is:
+
+* Readable
+
+* Understandable
+
+* Maintainable
+
+* Extendable
+
+<hr style="width:100%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:1"> 
+
+# Why Should we Write Clean Code?
+
+By using clean code and making the code readable you will save time for yourself and others in the future when adding new features, testing, fixing bugs and collaborating.
+
+>**Code is like humour. When you have to explain it, it’s bad - Cory House**
+
+<hr style="width:100%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:1">
+
+# How to Write Clean Code?
+
+Writing clean code is about  always considering the principles when writing code.
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+## Use Descriptive Names{.tabset .tabset-fade}
+
+Use meaningful names for **variables**, **functions**, or whatever it is you’re naming. 
+
+Avoid abbreviations that you understand now but which will be unclear to others, or future you.
+
+<hr style="width:50%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.50">
+
+### **Exercise**{-}
+
+Let's look at an example, suppose you want to select a **variable name** for the **number of patients**, which one would you pick?
+
+```{r}
+# Number of patients - option 1
+x = 10
+
+# Number of patients - option 2
+no_pat = 10
+
+# Number of patients - option 3
+No_Pat = 10
+
+# Number of patients - option 4
+Number_Of_Patients = 10
+
+# Number of patients - option 5
+number_of_patients = 10
+
+# Number of patients - option 6
+number.of.patients = 10
+
+# Number of patients - option 7
+numberOfPatients = 10
+```
+
+ <hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+### **Show Answer**{-}
+
+The general rule is to have all letters in lower case separated by underscores. 
+
+This style of naming is also known as **snake case**.
+
+```{r}
+# Number of patients - option 5
+number_of_patients = 10
+
+```
+
+<br>
+
+There are other conventions you can follow as well, as shown in the image below.
+
+
+![Different naming conventions. Artwork by @allison_horst.](images/coding_cases.png)\
+
+[Illustration done by Allison Horst](https://github.com/allisonhorst/stats-illustrations/)
+
+```{r}
+# Number of patients - option 4
+Number_Of_Patients = 10
+
+# Number of patients - option 6
+number.of.patients = 10
+```
+
+
+<br>
+
+>**The most important principle of variable naming is consistency. It is fine to use capitalization or not, or use different formats for different types of variables, as long as it is consistent throughout your code, and clearly communicated to the people that you are working with.**
+
+
+
+
+
+You can find more information on [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/#naming-conventions) or [The tidyverse style guide -- Style Guide for R](https://style.tidyverse.org/)
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+## Comments{.tabset .tabset-fade}
+
+Code comments give extra information that is not executed when the code is run. They  can be added by a preceding hash character **(# This is a comment)**.
+
+Comments are essential to help those working on the code in the future to understand any non-obvious details around how and why the code has been written in a particular way. 
+
+<hr style="width:50%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.50">
+
+### **Exercise**{-}
+
+Let's look at the comments below, any thoughts on how useful they are?
+
+```{r}
+# Set number_1 to 5
+number_1 = 5
+
+# Set number_2 to 9
+number_2 = 9
+
+# Set total to the sum of number_1 and number_2
+total = number_1 + number_2
+```
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+### **Show Answer**{-}
+
+Comments that describe exactly what is occurring in the code, as above, are often not necessary.
+
+They may be redundant, if good naming practices are followed to self-document the steps that occur in your code.
+
+```{r}
+# Set number_1 to 5
+number_1 = 5
+
+# Set number_2 to 9
+number_2 = 9
+
+# Set total to the sum of number_1 and number_2
+total = number_1 + number_2
+```
+
+<br>
+
+>**Avoid “noise” comments that tell you what you already know from just looking at the code.**
+
+<br>
+
+Comments can be used more effectively to explain why you might have written code in a certain way.
+
+For example, you might explain to other analysts and developers why a section of your code doesn’t follow standard practices, perhaps because the typical method didn’t work. 
+
+This type of comment can help to clarify your decision-making process, without needing to describe the individual steps taken.
+
+```{r}
+# Tried solution X, but Y worked better because of Z
+
+# Don't use function X here, because of Y
+
+# Temporary work around for bug in function X
+# TODO: fix function X, so that Y
+
+# This section of code is commented out because of X
+```
+
+<br>
+
+Comments are sometimes used to divide long sections of code into sub-sections that relate to their overall functionality. 
+
+That said, the merit of doing so will depend on the value added.
+
+For example, the code below is already self-documenting and therefore adding the section headings does not add much value.
+
+```{python, eval=F}
+# Import Libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
+# Get data
+penguins = sns.load_dataset("penguins")
+
+# Analyse
+species_means = penguins.groupby("species").mean()
+
+# Report
+plt.plot(penguins.bill_length_mm)
+species_means.to_csv("penguin_species_mean_measurements.csv")
+```
+
+
+**In summary, you should use comments sparingly but purposefully. Make sure to:**
+
+* explain why certain things are done, in order to provide context around the decisions that you have made.
+
+* not use commenting to echo what your code is already telling the reader.
+
+* and as with any other documentation, make sure comments are accurate and still relevant after code changes.
+
+
+ <hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+## Do not repeat yourself (DRY)
+
+Don’t repeat yourself aka DRY promotes that the code we create should be unique, avoiding or reducing duplicated code. Having the same code in multiple places makes maintainability harder, if we make any changes to the code it needs to be updated in different places instead of just one. Duplicated code also adds complexity and makes the code excessively long. A general golden rule is that when we find ourselves creating duplicated code, that’s a good usage for a function.
+
+<hr style="width:50%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.50">
+
+### Strategies for Writing DRY Code
+
+* Write **functions** for a task that is performed over and over.
+
+* Create **loops** that iterate over repetitive tasks.
+
+* Use **conditional statements** to control if and when code is executed.
+
+Lets look at an example.
+
+Suppose we have the data below, lets say we want to find out how many unique years there are and then split the dataset into individual smaller datasets based on the year. E.g 1952 would only have data for that year.
+
+```{python, eval=F}
+import pandas as pd
+
+gapminder_dataset = pd.read_csv("gapminder.csv")
+
+gapminder_dataset
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(kableExtra)
+
+gapminder <- read_csv("D:/Iyani/ADR_clean_code_presentation/data/gapminder.csv")
+
+gapminder %>% 
+ kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "200", height = "300px")
+```
+
+<br>
+
+Let's find the unique years in the data.
+
+```{python, eval=F}
+gapminder_dataset["year"].unique()
+```
+
+
+
+```{r echo=FALSE}
+unique(gapminder$year)
+```
+
+
+Let's now filter our gapminder dataset into the separate years.
+
+
+```{python, eval =F}
+# Filtering the data for a specific year
+
+year_1952 = gapminder_dataset[gapminder_dataset['year'] == 1952]
+
+year_1957 = gapminder_dataset[gapminder_dataset['year'] == 1957]
+
+year_1962 = gapminder_dataset[gapminder_dataset['year'] == 1962]
+
+year_1967 = gapminder_dataset[gapminder_dataset['year'] == 1967]
+
+year_1977 = gapminder_dataset[gapminder_dataset['year'] == 1977]
+
+year_1982 = gapminder_dataset[gapminder_dataset['year'] == 1982]
+
+year_1987 = gapminder_dataset[gapminder_dataset['year'] == 1987]
+
+year_1992 = gapminder_dataset[gapminder_dataset['year'] == 1992]
+
+year_1997 = gapminder_dataset[gapminder_dataset['year'] == 1997]
+
+year_2002 = gapminder_dataset[gapminder_dataset['year'] == 2002]
+```
+
+
+You can see above that I have repeated the same code multiple times and only change a few parts of it.This was okay for 12 years, but what if we had 100 unique years.
+
+The general rule is that if you copy and paste code more than 3 times you should create a function. 
+
+So instead of copying and pasting the code I have created the function below to extract data for  unique years. 
+
+I have also included a loop, which will iterate over the whole  year column.
+
+To use this function you need to specify the dataframe and the column names. This will save the datasets in a dictionary which we can access by specifying  the year.
+
+
+```{python, eval=F}
+# We can extract any column now
+
+def extract_values(dataframe, column):
+    '''
+    Document String
+    
+    Splits a DataFrame into multiple Dataframes based on the unique values in a column.
+    Returns a Dictionary. 
+    Each Key is a unique value from the column and the dictionary value 
+    is the results of the filter of that value.
+    
+    Paramaters
+    Dataframe = a Pandas Dataframe of the data you wish to split
+    column = The column with unique values you wish to split. 
+    
+    '''
+    values_dictionary = {}
+    
+    values_unique = dataframe[column].unique()
+    
+    for each_value in values_unique:
+      
+        values_dictionary[key] = dataframe[dataframe[column] == each_value]
+        
+    return values_dictionary
+```
+
+Let's use the function, so below I am saving the output in a variable called values_dictionary, storing all the smaller datasets separately.
+
+```{python, eval=F}
+# Using the function
+
+values_dictionary = extract_values(dataframe = gapminder_dataset, 
+                                      column = "year")
+```
+
+To access the datasets, you only need to specify the year.
+As shown below, we can see we have the 1957 dataset.
+
+```{python, eval=F}
+# Using the function
+# How you reference a dictionary note here the keys are integer
+
+values_dictionary[1957]
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+t <- gapminder %>% 
+  filter(year == 1957)
+
+t %>% 
+ kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "200", height = "300px")
+```
+We can try a different year.
+
+```{python, eval=F}
+# Using the function
+# How you reference a dictionary note here the keys are integer
+
+values_dictionary[1987]
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+t <- gapminder %>% 
+  filter(year == 1987)
+
+t %>% 
+ kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "200", height = "300px")
+```
+
+
+We can use this for any dataset and any column.
+
+Here am using the country column and selecting the data for Malawi.
+
+```{python, eval=F}
+# Using the function
+
+values_dictionary = extract_values(dataframe = gapminder_dataset, column = "continent")
+```
+
+```{python, eval=F}
+# Using the function
+# How you reference a dictionary note here the keys are integer
+
+values_dictionary["Asia"]
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+t <- gapminder %>% 
+  filter(country == "Malawi")
+
+t %>% 
+ kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  scroll_box(width = "200", height = "300px")
+```
+
+
+
+```{python eval=FALSE, include=FALSE}
+temperature_farenheight = 32
+
+temperature_farenheight
+```
+
+```{python,eval=FALSE, include=FALSE}
+celsius = 5/9(farenheight - 32)
+```
+
+```{python eval=FALSE, include=FALSE}
+temperature_celsius = 5/9*(temperature_farenheight - 32)
+
+temperature_celsius
+```
+```{python eval=FALSE, include=FALSE}
+temperature_farenheight_2 = 11
+
+temperature_farenheight_3 = 81
+```
+
+```{python eval=FALSE, include=FALSE}
+temperature_celsius_2 = 5/9*(temperature_farenheight_2 - 32)
+
+temperature_celsius_2
+```
+
+```{python eval=FALSE, include=FALSE}
+temperature_celsius_3 = 5/9*(temperature_farenheight_3 - 32)
+
+temperature_celsius_3
+```
+
+```{python eval=FALSE, include=FALSE}
+def fahrenheit_to_degrees_celsius(degrees_farenheight): 
+    """Convert temperature in Fahrenheit to Celsius.
+
+    Parameters:
+    -----------
+    degrees_farenheight: int or float
+                         The temperature in Fahrenheit.
+    
+    Returns:
+    -----------
+    degrees_celsius : int or float
+                      The temperature in celsius.
+    """
+    degrees_celsius = (5/9)*(degrees_farenheight - 32)
+    
+    return degrees_celsius
+```
+
+```{python eval=FALSE, include=FALSE}
+temp = 55
+
+new_temp = fahrenheit_to_degrees_celsius(degrees_farenheight = temp)
+
+new_temp
+```
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+## Make it Modular
+
+Do not have a single file that does everything. If you split your code into separate, independent modules it will be easier to read, debug, test, and use.
+
+For example, you could break your project into the scripts shown below.
+
+```{python, eval=F}
+project
+|-- main.py
+|-- data_cleaning.py
+|-- modelling.py
+|-- reporting.py
+```
+
+
+Within your scripts, do not have a single function that tries to do everything. 
+
+Functions should have limits too; they should do one thing only. 
+
+```{python}
+# This is bad
+def transform(text, uppercase):
+    if uppercase:
+        return text.upper()
+    else:
+        return text.lower()
+```
+
+
+```{python}
+# This is good
+def uppercase(text):
+    return text.upper()
+
+def lowercase(text):
+    return text.lower()
+```
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+
+
+# Project Structure
+
+As your analysis project grows, it becomes more important to keep your project structure clean. Every project is different, and the right way to organise your project might differ from another project. However, there are some principles that are useful to consider.
+
+A typical analytical project folder might look like:
+
+```{python, eval=F}
+|-- requirements.txt
+|-- data/
+|   -- incident_counts.csv
+|-- docs/
+|   -- notebook.md
+|-- results/
+|   -- incident_counts_by_age.csv
+|   -- incidents_over_time.svg
+|-- analysis/
+|   -- data_cleaning.py
+|   -- main_analysis.py
+|   -- generate_plots.py
+```
+
+<hr style="width:50%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.50">
+
+## Raw data should be preserved
+
+You should not alter raw data - treat it as read-only. Even data cleaning should take place on a copy of the raw data, so that you can document which cleaning decisions have been made.
+
+<hr style="width:50%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.50">
+
+## Outputs should be disposable
+
+You should be able to dispose of your outputs, deleting them, without worrying. If you are worried about deleting your outputs (i.e. results) then it is unlikely you have confidence in being able to reproduce your results.
+
+It is good practice to delete and regenerate your outputs frequently when developing analysis.
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+# Code Review
+
+Perform code reviews: give what you’ve done to a colleague and ask them to go through it line-by-line to check it works as intended. I'll be very suprised if they do this properly and don’t find any mistakes or issues. Return the favour to magically become a better coder yourself.
+
+Here is an example of project in which code was formally peer reviewed.
+
+[stats19](https://docs.ropensci.org/stats19/)
+
+
+
+
+<hr style="width:75%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:0.75">
+
+
+# Version Control
+
+Version control is managing changes to your analysis over time.
+
+An audit trail is essential for assuring quality analysis. It’s important for us to be able to answer the following questions about our analysis:
+
+* What changes have been made to our project?
+
+* When were those changes made?
+
+* Why were those changes made?
+
+* Who made those changes?
+
+Version control software, like Git, records the answers to these questions throughout the development of a project.
+
+Repositories or “repos” are typically project folders that are version controlled using Git or a similar version control system. One repository usually contains a single project. Developing your project using a version controlled repository has significant benefits for reproducibility.
+
+In a public repository, you may need to omit confidential or sensitive aspects of the project, below is an example of a project.
+
+[Analysing UK port and shipping operations using big data](https://github.com/datasciencecampus/off-course)
+
+
+
+
+
+<hr style="width:100%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:1">
+
+# Summary
+
+When writing clean code, remember to;
+
+* Use Descriptive Names, be consistent with your naming convention
+
+* Write meaningful comments
+
+* Don't Repeat Yourself - use functions, loops and conditional statements
+
+* Be consistent with your naming convention
+
+* Keeping projects clean and organised
+
+* Arrange code reviews
+
+* Use version control
+
+
+<hr style="width:100%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:1"> 
+
+# Acknowledgement and References
+
+[Images and Illustrations done by Allison Horst](https://github.com/allisonhorst/stats-illustrations/)
+
+[Quality Assurance of Code for Analysis and Research ](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html)
+
+[Coding for Economists](https://aeturrell.github.io/coding-for-economists/wrkflow-rap.html)
+
+[Coding from zero](https://www.gov.uk/government/news/coding-from-zero)
+
+
+[Best Practice in Programming for Data Scientists: Clean Code](https://datasciencecampus.github.io/coffee-and-coding/20190611_clean_code/Best_Practice_in_Programming_for_Data_Scientists_python_and_R.html) 
+
+[Guttmacher Institute Coding Style Guide](https://guttinst.github.io/#section5)
+
+
+[DRY Code and Modularity](https://www.earthdatascience.org/courses/intro-to-earth-data-science/write-efficient-python-code/intro-to-clean-code/dry-modular-code/)
+
+
+
+<hr style="width:100%;height:4px;border-width:0;color:gray;background-color:#2c3e50; opacity:1">
+
